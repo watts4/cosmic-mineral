@@ -211,6 +211,174 @@ function pick<T>(arr: T[]): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
+// ─── Life cards ───────────────────────────────────────────────────────────────
+function generateLifeCards(m: Mineral, a: AstronomyData): import('../types').LifeCard[] {
+  const retro = a.mercury.retrograde;
+  const fullMoon = a.moon.illumination > 80;
+  const newMoon = a.moon.illumination < 12;
+  const waningMoon = a.moon.phase > 180;
+  const venusClose = a.venus.distance < 0.9;
+  const marsClose = a.mars.distance < 1.0;
+
+  // ── Work ────────────────────────────────────────────────────────────────────
+  const workAdvice = retro
+    ? pick([
+        'Not the week to pitch a big idea or send that email to your boss. What feels brilliant right now might read very differently in a few days. Draft it, save it, come back to it.',
+        'Avoid starting big new projects this week — finishing existing ones is where your energy is best spent. Mercury retrograde rewards wrapping things up, not launching.',
+        'Double-check everything before you submit it. Contracts, emails, proposals — read it twice. Mercury retrograde loves finding the thing you missed.',
+      ])
+    : marsClose
+    ? pick([
+        'Mars is close and your ambition is loud right now. Use that drive on one focused thing instead of scattering it across ten. Momentum matters more than multitasking today.',
+        'High-energy day for work. The confidence is real — use it to have the ask you\'ve been delaying. Raise, new project, the conversation you keep putting off.',
+      ])
+    : fullMoon
+    ? pick([
+        'Big emotions at work today — yours and your coworker\'s. If something bothers you, let it land before you respond. Full Moon energy makes reactions bigger than they need to be.',
+        'Something at work has probably been brewing for a while and it\'s coming to a head. Address it directly and calmly — this is actually a good clearing moment.',
+      ])
+    : pick([
+        'Steady, productive day. No big drama — just do the important thing you\'ve been avoiding. Future you will be genuinely grateful.',
+        'Clear energy for focused work today. Pick the one task that actually moves the needle and commit to it before doing anything else.',
+        'Good day to make a decision you\'ve been sitting on at work. The stars aren\'t telling you to wait any longer.',
+      ]);
+
+  // ── Communication ────────────────────────────────────────────────────────────
+  const commAdvice = retro
+    ? pick([
+        'Read it twice before sending. Sleep on the hard conversation. Mercury retrograde is basically the universe\'s "are you SURE?" prompt on every important message.',
+        'Misunderstandings are running high right now. If something someone said is bothering you, ask what they meant before assuming the worst.',
+        'This is a terrible week to argue over text. If something needs to be resolved, do it in person or on a call — tone gets lost and things escalate fast right now.',
+      ])
+    : fullMoon
+    ? pick([
+        'Emotions are loud for everyone right now. Lead with "I feel" instead of "you always" and the conversation will go much better than you expect.',
+        'Big feelings make for big conversations. If you\'ve got something important to say, this is actually a powerful time to say it — just come with compassion, not accusations.',
+      ])
+    : pick([
+        'Clear skies for communication. Say what you mean, ask what you actually want to know, and don\'t soften everything to the point where the message disappears.',
+        'Good day for the honest conversation. You\'ve probably been holding something back — Mercury direct means the words will land the way you intend them to.',
+        'If you\'ve been waiting for the right moment to reach out to someone, this is it. Don\'t overthink the message. Just send it.',
+      ]);
+
+  // ── Friendship ───────────────────────────────────────────────────────────────
+  const friendAdvice = venusClose
+    ? pick([
+        'Venus is pulling close and someone in your circle is thinking about you right now. Reach out first — you never know what that text could mean to someone today.',
+        'High connection energy. Plans you make with friends this week are likely to actually happen. Don\'t cancel. Show up.',
+      ])
+    : retro
+    ? pick([
+        'Old friends might resurface during retrograde. Not all of them for good reasons. Trust your gut on who actually gets access to your time and energy.',
+        'A friendship might be asking you to reevaluate it right now. Not dramatically — just honestly. Are you still growing together or just comfortable?',
+      ])
+    : newMoon
+    ? pick([
+        'Good time to notice who you actually want more of in your life. You don\'t have to do anything about it yet — just pay attention to how you feel around different people.',
+      ])
+    : pick([
+        'Check in on the friend you haven\'t texted in a while. They probably won\'t reach out first, and you\'ve been thinking about them anyway.',
+        'Good social energy today. Say yes to the thing you\'d normally talk yourself out of. Sometimes the unplanned stuff is the best stuff.',
+        'One genuine conversation beats ten surface-level ones. You know which friend you can actually be real with. Call them.',
+      ]);
+
+  // ── Family ───────────────────────────────────────────────────────────────────
+  const familyAdvice = fullMoon
+    ? pick([
+        'Family stuff runs louder right now. If there\'s tension, it\'s probably been there a while — the Full Moon just puts a spotlight on it. You don\'t have to fix everything today, but you can stop pretending it\'s not there.',
+        'Emotions in the family are elevated. Someone might say something that lands harder than they intended. Give a little extra grace today — including to yourself.',
+      ])
+    : retro
+    ? pick([
+        'Don\'t get into a major family disagreement over text right now. If something needs to be said, say it in person — or wait until Mercury goes direct.',
+        'Old family patterns are showing up. You don\'t have to keep playing the same role you\'ve always played. It\'s okay to respond differently.',
+      ])
+    : waningMoon
+    ? pick([
+        'Waning moon is a natural release phase. Old family dynamics that aren\'t serving you anymore? You\'re allowed to put them down. Gently, but for real.',
+      ])
+    : pick([
+        'Reach out to someone in your family today — not because something is wrong, just because. Those are the messages that matter most.',
+        'Good day for a real conversation with family. Not logistics — an actual "how are you doing" kind of conversation.',
+        'Family energy is calm and stable today. If there\'s something you\'ve been meaning to do for a family member, today is a good day to do it.',
+      ]);
+
+  // ── Love & Romance ───────────────────────────────────────────────────────────
+  const loveAdvice = venusClose
+    ? pick([
+        'Venus is closer than usual and the love energy is genuinely elevated. Someone is paying more attention to you than you realize right now. Stay open.',
+        'This is a real window for romantic connection. If you\'ve been holding back with someone, consider that the timing is actually good right now — not an excuse, just a fact.',
+      ])
+    : retro
+    ? pick([
+        'That "hey stranger" text you\'re considering? Mercury retrograde is famous for bringing exes back around. Ask yourself if that\'s actually what you want, or if you\'re just bored and nostalgic.',
+        'Don\'t start a new relationship or make a big romantic move this week if you can help it. Revisit it when Mercury goes direct — feelings will be clearer.',
+      ])
+    : fullMoon
+    ? pick([
+        'Full Moon has a way of making feelings impossible to ignore. If there\'s something you feel for someone, it\'s probably written all over your face right now anyway.',
+        'Romantic energy is high but also a little intense. Keep it warm, not overwhelming. Say the thing — just don\'t say ALL the things at once.',
+      ])
+    : pick([
+        'If there\'s something you\'ve wanted to say to someone romantically, the lane is clear right now. Don\'t let the moment keep passing.',
+        'Good day to be present with the person you love. Not a grand gesture — just actual attention. Put the phone down.',
+        'Love energy is quiet but steady today. The small things matter more than you think.',
+      ]);
+
+  // ── Money ────────────────────────────────────────────────────────────────────
+  const moneyAdvice = retro
+    ? pick([
+        'Hold off on big financial moves this week. Mercury retrograde and money decisions are a bad combo — contracts get weird, fine print gets missed, and buyer\'s remorse hits hard.',
+        'Not the time to invest, splurge, or sign anything financial. Use this week to review what you already have instead of adding more.',
+      ])
+    : fullMoon
+    ? pick([
+        'Don\'t make an emotional purchase at peak Full Moon. Sleep on it. If you still want it in three days, it\'s probably not just an impulse.',
+        'Full Moon energy makes everything feel more urgent than it is — including spending. Pause before you buy anything over $50 today.',
+      ])
+    : marsClose
+    ? pick([
+        'Your ambition around money is running hot. Use it to negotiate, plan, or research — not to rush into something. The drive is good; the impatience is the thing to watch.',
+      ])
+    : pick([
+        'Stable money energy today. Good time to look at the budget you\'ve been avoiding or make a small financial decision you\'ve been sitting on.',
+        'If you\'ve been thinking about a financial goal, today is a good day to take one concrete step toward it. Not the whole thing — one step.',
+        'Check your accounts today. Not anxiously — just intentionally. Awareness is the first step.',
+      ]);
+
+  // ── Self Care ────────────────────────────────────────────────────────────────
+  const selfAdvice = newMoon
+    ? pick([
+        'New Moon is the universe\'s rest phase. You\'re not being lazy — you\'re being smart. What would you do today if productivity wasn\'t the metric?',
+        'Quiet energy right now. Journaling, walking, doing nothing intentionally — all valid. Recharge before the cycle picks back up.',
+      ])
+    : fullMoon
+    ? pick([
+        'Your nervous system is working overtime. More water, less screen time, earlier to bed. You probably already know exactly what you need — just actually do it.',
+        'Full Moon energy is a lot to carry. Give yourself permission to feel whatever is coming up without immediately trying to fix it.',
+      ])
+    : retro
+    ? pick([
+        'Your energy needs protecting right now. What\'s one thing on your calendar this week that you\'re dreading? See if you can cancel it.',
+        'Mercury retrograde is exhausting in a subtle way. Lower your expectations for yourself a little this week — rest is productive too.',
+      ])
+    : pick([
+        'Take a break today that actually feels like a break — not just scrolling. Go outside, eat slowly, do one thing with zero purpose.',
+        'What has your body been asking for that you keep postponing? Sleep, movement, a real meal. Today\'s a good day to actually do it.',
+        `Your ${m.name} is a reminder that the most powerful things often look quiet on the outside. Rest is not falling behind.`,
+      ]);
+
+  return [
+    { topic: 'Work', icon: '💼', advice: workAdvice },
+    { topic: 'Communication', icon: '💬', advice: commAdvice },
+    { topic: 'Friendship', icon: '🤝', advice: friendAdvice },
+    { topic: 'Family', icon: '🏡', advice: familyAdvice },
+    { topic: 'Love', icon: '❤️', advice: loveAdvice },
+    { topic: 'Money', icon: '💰', advice: moneyAdvice },
+    { topic: 'Self Care', icon: '🧘', advice: selfAdvice },
+  ];
+}
+
 // ─── Main generator ───────────────────────────────────────────────────────────
 export function generateAlignment(mineral: Mineral, astro: AstronomyData): AlignmentResult {
   const openings = astro.mercury.retrograde ? RETROGRADE_OPENINGS : DIRECT_OPENINGS;
@@ -238,6 +406,7 @@ export function generateAlignment(mineral: Mineral, astro: AstronomyData): Align
     protocol: mineral.protocol_detail,
     warning: getWarning(mineral, astro),
     optimal_window_hours: Math.floor(Math.random() * 36) + 12,
+    life_cards: generateLifeCards(mineral, astro),
     timestamp: new Date(),
   };
 }

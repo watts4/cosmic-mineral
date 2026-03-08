@@ -38,6 +38,12 @@ export interface AstronomyData {
   computedAt: Date;
 }
 
+export interface LifeCard {
+  topic: string;
+  icon: string;
+  advice: string;
+}
+
 export interface AlignmentResult {
   mineral: Mineral;
   fortune_text: string;
@@ -48,6 +54,7 @@ export interface AlignmentResult {
   protocol: string;
   warning: string;
   optimal_window_hours: number;
+  life_cards: LifeCard[];
   timestamp: Date;
 }
 

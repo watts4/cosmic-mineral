@@ -50,6 +50,58 @@ function ScoreRing({ score }: { score: number }) {
 }
 
 // ─── Fortune accordion ────────────────────────────────────────────────────────
+// ─── Life card grid ───────────────────────────────────────────────────────────
+import type { LifeCard } from './types';
+
+function LifeCardGrid({ cards }: { cards: LifeCard[] }) {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {cards.map((card, i) => {
+        const isOpen = open === i;
+        return (
+          <div
+            key={i}
+            className={`rounded-xl overflow-hidden transition-all duration-200 ${isOpen ? 'col-span-2' : ''}`}
+            style={{
+              border: isOpen
+                ? '1px solid rgba(167,139,250,0.45)'
+                : '1px solid rgba(124,58,237,0.18)',
+              background: isOpen
+                ? 'rgba(88,28,135,0.18)'
+                : 'rgba(15,5,35,0.5)',
+            }}
+          >
+            <button
+              onClick={() => setOpen(isOpen ? null : i)}
+              className="w-full flex items-center justify-between px-3 py-3 text-left cursor-pointer gap-2"
+            >
+              <div className="flex items-center gap-2">
+                <span className="text-lg">{card.icon}</span>
+                <span className="text-sm font-semibold text-purple-200">{card.topic}</span>
+              </div>
+              <span
+                className="text-purple-400 text-base shrink-0 transition-transform duration-300"
+                style={{ transform: isOpen ? 'rotate(90deg)' : 'rotate(0deg)' }}
+              >
+                ›
+              </span>
+            </button>
+            {isOpen && (
+              <div className="px-4 pb-4">
+                <div className="h-px bg-purple-800/40 mb-3" />
+                <p className="text-slate-300 text-sm leading-relaxed">{card.advice}</p>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Fortune accordion ────────────────────────────────────────────────────────
 const ACCORDION_LABELS = [
   { icon: '🪐', title: 'What the Planets Are Saying', hint: 'Tap to reveal your cosmic conditions' },
   { icon: '🌙', title: 'Moon & Heart Energy Today',   hint: 'Tap to reveal your emotional forecast' },
@@ -380,6 +432,15 @@ export default function App() {
                 </span>
               </div>
               <p className="text-slate-300 text-sm leading-relaxed">{result.warning}</p>
+            </div>
+
+            {/* Life area cards */}
+            <div>
+              <div className="flex items-center gap-2 mb-3 px-1">
+                <span className="text-xs font-mono text-purple-400 tracking-widest uppercase">Your Life Readings</span>
+                <div className="flex-1 h-px bg-purple-900/60" />
+              </div>
+              <LifeCardGrid cards={result.life_cards} />
             </div>
 
             {/* Scientific disclaimer */}
