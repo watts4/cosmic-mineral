@@ -118,7 +118,7 @@ export default function App() {
 
         {/* Planet */}
         <div className="animate-float">
-          <Planet3D active={computing} />
+          <Planet3D active={computing} astro={astro ?? undefined} />
         </div>
 
         {/* Live Astronomical Readings */}
