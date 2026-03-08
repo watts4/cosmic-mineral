@@ -49,6 +49,67 @@ function ScoreRing({ score }: { score: number }) {
   );
 }
 
+// ─── Fortune accordion ────────────────────────────────────────────────────────
+const ACCORDION_LABELS = [
+  { icon: '🪐', title: 'What the Planets Are Saying', hint: 'Tap to reveal your cosmic conditions' },
+  { icon: '🌙', title: 'Moon & Heart Energy Today',   hint: 'Tap to reveal your emotional forecast' },
+  { icon: '✨', title: 'What Your Stone Wants You to Know', hint: 'Tap to reveal your personal guidance' },
+];
+
+function FortuneAccordion({ paragraphs }: { paragraphs: string[] }) {
+  const [open, setOpen] = useState<number | null>(null);
+
+  return (
+    <div className="space-y-2 mt-1">
+      {paragraphs.map((text, i) => {
+        const meta = ACCORDION_LABELS[i] ?? { icon: '🔮', title: `Message ${i + 1}`, hint: 'Tap to reveal' };
+        const isOpen = open === i;
+        return (
+          <div
+            key={i}
+            className="rounded-xl overflow-hidden transition-all duration-200"
+            style={{
+              border: isOpen
+                ? '1px solid rgba(167,139,250,0.5)'
+                : '1px solid rgba(124,58,237,0.2)',
+              background: isOpen
+                ? 'rgba(88,28,135,0.18)'
+                : 'rgba(15,5,35,0.5)',
+            }}
+          >
+            <button
+              onClick={() => setOpen(isOpen ? null : i)}
+              className="w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-xl">{meta.icon}</span>
+                <div>
+                  <div className="text-sm font-semibold text-purple-200">{meta.title}</div>
+                  {!isOpen && (
+                    <div className="text-xs text-slate-500 mt-0.5">{meta.hint}</div>
+                  )}
+                </div>
+              </div>
+              <span
+                className="text-purple-400 text-lg transition-transform duration-300"
+                style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+              >
+                ›
+              </span>
+            </button>
+            {isOpen && (
+              <div className="px-4 pb-4">
+                <div className="h-px bg-purple-800/40 mb-3" />
+                <p className="text-slate-300 text-sm leading-relaxed">{text}</p>
+              </div>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
 // ─── Main App ─────────────────────────────────────────────────────────────────
 export default function App() {
   const [astro, setAstro] = useState<AstronomyData | null>(null);
@@ -264,14 +325,8 @@ export default function App() {
                 Primary Influence: {result.primary_influence}
               </div>
 
-              {/* Fortune text */}
-              <div className="space-y-3">
-                {result.fortune_text.split('\n\n').map((para, i) => (
-                  <p key={i} className="text-slate-300 text-sm leading-relaxed">
-                    {para}
-                  </p>
-                ))}
-              </div>
+              {/* Fortune text — collapsible gift cards */}
+              <FortuneAccordion paragraphs={result.fortune_text.split('\n\n')} />
             </div>
 
             {/* Data readout */}
