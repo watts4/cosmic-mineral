@@ -265,9 +265,13 @@ export default function App() {
               </div>
 
               {/* Fortune text */}
-              <p className="text-slate-300 text-sm leading-relaxed">
-                {result.fortune_text}
-              </p>
+              <div className="space-y-3">
+                {result.fortune_text.split('\n\n').map((para, i) => (
+                  <p key={i} className="text-slate-300 text-sm leading-relaxed">
+                    {para}
+                  </p>
+                ))}
+              </div>
             </div>
 
             {/* Data readout */}
