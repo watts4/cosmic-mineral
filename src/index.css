@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(124, 58, 237, 0.4), 0 0 40px rgba(124, 58, 237, 0.2); }
+  50% { box-shadow: 0 0 30px rgba(124, 58, 237, 0.8), 0 0 60px rgba(124, 58, 237, 0.4); }
+}
+
+@keyframes scan-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.animate-twinkle { animation: twinkle 3s ease-in-out infinite; }
+.animate-float { animation: float 4s ease-in-out infinite; }
+.animate-pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+
+.shimmer-text {
+  background: linear-gradient(90deg, #a78bfa 0%, #67e8f9 40%, #f0abfc 70%, #a78bfa 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+.cosmic-card {
+  background: rgba(15, 5, 35, 0.8);
+  border: 1px solid rgba(124, 58, 237, 0.3);
+  backdrop-filter: blur(12px);
+}
+
+.cosmic-card:hover {
+  border-color: rgba(124, 58, 237, 0.6);
+}
+
+.data-readout {
+  font-family: 'Courier New', Courier, monospace;
+  color: #67e8f9;
+}
