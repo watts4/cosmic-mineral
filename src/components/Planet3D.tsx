@@ -45,10 +45,11 @@ interface Spark {
 
 function SparkSystem({ sparks }: { sparks: Spark[] }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const dummy = new THREE.Object3D();
+  const dummyRef = useRef(new THREE.Object3D());
 
   useFrame((_, delta) => {
     if (!meshRef.current) return;
+    const dummy = dummyRef.current;
     sparks.forEach((spark, i) => {
       spark.position.addScaledVector(spark.velocity, delta);
       spark.velocity.multiplyScalar(0.92); // drag
