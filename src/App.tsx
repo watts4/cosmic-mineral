@@ -25,8 +25,8 @@ function ScoreRing({ score }: { score: number }) {
   const color = score >= 80 ? '#34d399' : score >= 65 ? '#a78bfa' : '#f59e0b';
 
   return (
-    <div className="flex flex-col items-center gap-1">
-      <svg width="110" height="110" className="rotate-[-90deg]">
+    <div className="relative" style={{ width: 110, height: 110 }}>
+      <svg width="110" height="110" className="absolute inset-0 rotate-[-90deg]">
         <circle cx="55" cy="55" r={r} fill="none" stroke="rgba(255,255,255,0.08)" strokeWidth="8" />
         <circle
           cx="55"
@@ -41,7 +41,7 @@ function ScoreRing({ score }: { score: number }) {
           style={{ transition: 'stroke-dashoffset 1.2s ease' }}
         />
       </svg>
-      <div className="absolute flex flex-col items-center justify-center" style={{ marginTop: '-82px' }}>
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
         <span className="text-2xl font-bold text-white">{score}</span>
         <span className="text-xs text-purple-300">/ 100</span>
       </div>
@@ -347,23 +347,7 @@ export default function App() {
                     {result.mineral.formula} · Mohs {result.mineral.mohs}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-xs font-mono text-purple-400 mb-1">Alignment Score</div>
-                  <div
-                    className="text-4xl font-black"
-                    style={{
-                      color:
-                        result.alignment_score >= 80
-                          ? '#34d399'
-                          : result.alignment_score >= 65
-                          ? '#a78bfa'
-                          : '#f59e0b',
-                    }}
-                  >
-                    {result.alignment_score}
-                  </div>
-                  <div className="text-xs text-slate-500 font-mono">/ 100</div>
-                </div>
+                <ScoreRing score={result.alignment_score} />
               </div>
 
               {/* Primary influence badge */}
