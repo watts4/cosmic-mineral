@@ -1,6 +1,9 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
 import { Atom, AlertTriangle, Clock, Zap, Shield, ChevronRight, RotateCcw, FlaskConical } from 'lucide-react';
-import Planet3D from './components/Planet3D';
+
+// Lazy-load the 3D scene so three.js / @react-three/* land in a separate
+// chunk and don't block the initial paint of the landing UI.
+const Planet3D = lazy(() => import('./components/Planet3D'));
 import { computeAstronomy } from './lib/astronomy';
 import { generateAlignment } from './lib/fortune';
 import { getRandomMineral } from './data/minerals';
@@ -231,7 +234,18 @@ export default function App() {
 
         {/* Planet */}
         <div className="animate-float">
-          <Planet3D active={computing} astro={astro ?? undefined} />
+          <Suspense
+            fallback={
+              <div
+                className="w-full flex items-center justify-center text-purple-400/60 text-xs font-mono tracking-widest uppercase"
+                style={{ height: 280 }}
+              >
+                Initializing planetary renderer…
+              </div>
+            }
+          >
+            <Planet3D active={computing} astro={astro ?? undefined} />
+          </Suspense>
         </div>
 
         {/* Live Astronomical Readings */}
