@@ -1,6 +1,6 @@
 import {
   Body,
-  EclipticLongitude,
+  Ecliptic,
   MoonPhase,
   Illumination,
   GeoVector,
@@ -19,6 +19,12 @@ function getMoonPhaseName(angle: number): { name: string; emoji: string } {
   return { name: 'Waning Crescent', emoji: '🌘' };
 }
 
+// Geocentric ecliptic longitude — retrograde is an apparent motion as seen from
+// Earth, so heliocentric longitude (EclipticLongitude) never goes backward.
+function geoEclipticLongitude(body: Body, date: Date): number {
+  return Ecliptic(GeoVector(body, date, true)).elon;
+}
+
 function getMoonIllumination(phaseAngle: number): number {
   // Illumination fraction: 0 at new moon, 100 at full moon
   return Math.round(50 * (1 - Math.cos((phaseAngle * Math.PI) / 180)));
@@ -29,8 +35,8 @@ export function computeAstronomy(): AstronomyData {
   const yesterday = new Date(now.getTime() - 86_400_000);
 
   // Mercury ecliptic longitude today vs yesterday to detect retrograde
-  const mercLonToday = EclipticLongitude(Body.Mercury, now);
-  const mercLonYesterday = EclipticLongitude(Body.Mercury, yesterday);
+  const mercLonToday = geoEclipticLongitude(Body.Mercury, now);
+  const mercLonYesterday = geoEclipticLongitude(Body.Mercury, yesterday);
 
   let mercVelocity = mercLonToday - mercLonYesterday;
   // Handle 360° wrap-around
