@@ -73,7 +73,7 @@ function SparkSystem({ sparks }: { sparks: Spark[] }) {
   return (
     <instancedMesh ref={meshRef} args={[undefined, undefined, sparks.length]}>
       <sphereGeometry args={[1, 6, 6]} />
-      <meshBasicMaterial vertexColors />
+      <meshBasicMaterial />
     </instancedMesh>
   );
 }
