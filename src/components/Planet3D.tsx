@@ -256,12 +256,13 @@ function Scene({ active, personality }: SceneProps) {
         )
           .normalize()
           .multiplyScalar(2.5 + Math.random() * 2);
+        const life = 0.6 + Math.random() * 0.5;
         return {
           id: sparkIdRef.current++,
           position: point.clone(),
           velocity: dir,
-          life: 0.6 + Math.random() * 0.5,
-          maxLife: 0.6 + Math.random() * 0.5,
+          life,
+          maxLife: life,
           color: Math.random() > 0.5 ? glowColor.clone() : baseColor.clone(),
           size: 0.05 + Math.random() * 0.08,
         };
